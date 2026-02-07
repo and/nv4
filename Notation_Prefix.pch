@@ -3,39 +3,11 @@
 //
 
 #include <AvailabilityMacros.h>
-#ifndef MAC_OS_X_VERSION_10_6
-#define MAC_OS_X_VERSION_10_6 1060
-#endif
 
 #if __OBJC__
 #import <Cocoa/Cocoa.h>
 #endif
 
-#ifndef NSFoundationVersionNumber10_6
-#define NSFoundationVersionNumber10_6 751.00
-#endif
-#ifndef NSFoundationVersionNumber10_5
-#define NSFoundationVersionNumber10_5 677.00
-#endif
-#ifndef NSAppKitVersionNumber10_3
-#define NSAppKitVersionNumber10_3 743.0
-#endif
-
-#ifndef NSINTEGER_DEFINED
-#if __LP64__ || NS_BUILD_32_LIKE_64
-typedef long NSInteger;
-typedef unsigned long NSUInteger;
-#else
-typedef int NSInteger;
-typedef unsigned int NSUInteger;
-#endif
-
-#define NSIntegerMax    LONG_MAX
-#define NSIntegerMin    LONG_MIN
-#define NSUIntegerMax   ULONG_MAX
-
-#define NSINTEGER_DEFINED 1
-#endif
 #define DebugPath(__p) (__p = ((!(__p)) ? __FILE__ : (__p)))
 #define _COMPILE_ASSERT_SYMBOL_INNER(line, msg) __COMPILE_ASSERT_ ## line ## __ ## msg
 #define _COMPILE_ASSERT_SYMBOL(line, msg) _COMPILE_ASSERT_SYMBOL_INNER(line, msg)
@@ -73,9 +45,93 @@ typedef char _COMPILE_ASSERT_SYMBOL(__LINE__, msg) [ ((test) ? 1 : -1) ]
 #define VERIFY_SALT "Salt for verifying master key in a single iteration"
 #define LOG_SESSION_SALT "Salt for encrypting a write-ahead-log session"
 
-#define IsLeopardOrLater (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber10_5)
-#define IsSnowLeopardOrLater (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber10_6)
+// These version checks are always true on macOS 13+, kept for source compatibility
+#define IsLeopardOrLater 1
+#define IsSnowLeopardOrLater 1
 
 #define NOTES_MENU_ID 89
 #define VIEW_MENU_ID 99
+
+// =============================================================================
+// Compatibility shims for APIs removed from modern macOS SDK headers
+// =============================================================================
+
+#if __OBJC__
+
+// Alert return value constants (removed from AppKit in macOS 12+ SDK)
+#ifndef NSAlertDefaultReturn
+#define NSAlertDefaultReturn 1
+#endif
+#ifndef NSAlertAlternateReturn
+#define NSAlertAlternateReturn 0
+#endif
+#ifndef NSAlertOtherReturn
+#define NSAlertOtherReturn -1
+#endif
+#ifndef NSAlertErrorReturn
+#define NSAlertErrorReturn -2
+#endif
+
+// NSRunAlertPanel and friends (removed from AppKit in macOS 12+ SDK)
+// Implemented in NVAlertCompat.m
+#ifndef NV_ALERT_COMPAT_DECLARED
+#define NV_ALERT_COMPAT_DECLARED
+extern NSInteger NVRunAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...) NS_FORMAT_FUNCTION(2,6);
+extern NSInteger NVRunCriticalAlertPanel(NSString *title, NSString *msgFormat, NSString *defaultButton, NSString *alternateButton, NSString *otherButton, ...) NS_FORMAT_FUNCTION(2,6);
+
+// Redirect old names to our compat functions
+#ifndef NSRunAlertPanel
+#define NSRunAlertPanel NVRunAlertPanel
+#endif
+#ifndef NSRunCriticalAlertPanel
+#define NSRunCriticalAlertPanel NVRunCriticalAlertPanel
+#endif
+#endif // NV_ALERT_COMPAT_DECLARED
+
+// NSAlert alertWithMessageText: compatibility (removed in macOS 12+ SDK)
+// Implemented in NVAlertCompat.m
+@interface NSAlert (NVCompat)
++ (NSAlert *)nv_alertWithMessageText:(NSString *)messageTitle
+					   defaultButton:(NSString *)defaultButtonTitle
+					 alternateButton:(NSString *)alternateButtonTitle
+						 otherButton:(NSString *)otherButtonTitle
+		   informativeTextWithFormat:(NSString *)informativeText, ... NS_FORMAT_FUNCTION(5,6);
+@end
+
+#ifndef alertWithMessageText
+#define alertWithMessageText nv_alertWithMessageText
+#endif
+
+// Pasteboard type compatibility (deprecated, may be removed in future SDKs)
+#ifndef NSStringPboardType
+#define NSStringPboardType NSPasteboardTypeString
+#endif
+#ifndef NSRTFPboardType
+#define NSRTFPboardType NSPasteboardTypeRTF
+#endif
+#ifndef NSRTFDPboardType
+#define NSRTFDPboardType NSPasteboardTypeRTFD
+#endif
+#ifndef NSHTMLPboardType
+#define NSHTMLPboardType NSPasteboardTypeHTML
+#endif
+#ifndef NSURLPboardType
+#define NSURLPboardType NSPasteboardTypeURL
+#endif
+#ifndef NSFilenamesPboardType
+#define NSFilenamesPboardType NSPasteboardTypeFileURL
+#endif
+
+// Control state value compatibility
+#ifndef NSOnState
+#define NSOnState NSControlStateValueOn
+#endif
+#ifndef NSOffState
+#define NSOffState NSControlStateValueOff
+#endif
+#ifndef NSMixedState
+#define NSMixedState NSControlStateValueMixed
+#endif
+
+#endif // __OBJC__
 

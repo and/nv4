@@ -30,7 +30,7 @@
 #import "NSData_transformations.h"
 #include <sys/param.h>
 #include <sys/mount.h>
-#include <openssl/md5.h>
+#include <CommonCrypto/CommonDigest.h>
 
 NSString *NotesDatabaseFileName = @"Notes & Settings";
 
@@ -120,12 +120,12 @@ static void uuid_create_md5_from_name(unsigned char result_uuid[16], const void 
 		0x97, 0xA4, 0x00, 0x30, 0x65, 0x43, 0xEC, 0xAC
 	};
 	
-    MD5_CTX c;
-	
-    MD5_Init(&c);
-    MD5_Update(&c, FSUUIDNamespaceSHA1, sizeof(FSUUIDNamespaceSHA1));
-    MD5_Update(&c, name, namelen);
-    MD5_Final(result_uuid, &c);
+    CC_MD5_CTX c;
+
+    CC_MD5_Init(&c);
+    CC_MD5_Update(&c, FSUUIDNamespaceSHA1, sizeof(FSUUIDNamespaceSHA1));
+    CC_MD5_Update(&c, name, namelen);
+    CC_MD5_Final(result_uuid, &c);
 	
     result_uuid[6] = (result_uuid[6] & 0x0F) | 0x30;
     result_uuid[8] = (result_uuid[8] & 0x3F) | 0x80;

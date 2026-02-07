@@ -24,6 +24,7 @@
 
 #include "BufferUtils.h"
 #include <string.h>
+#include <unistd.h>
 
 static const unsigned char gsToLowerMap[256] = {
 '\0', 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, '\t',
@@ -401,17 +402,10 @@ CFStringRef CreateRandomizedFileName() {
     
     sequence++;
     
-    ProcessSerialNumber psn;
-    OSStatus err = noErr;
-    if ((err = GetCurrentProcess(&psn)) != noErr) {
-	printf("error getting process serial number: %d\n", (int)err);
-	
-	//just use the location of our memory
-	psn.lowLongOfPSN = (unsigned long)&psn;
-    }
-    
-    CFStringRef name = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR(".%lu%lu-%d-%d"), 
-						psn.highLongOfPSN, (NSUInteger)psn.lowLongOfPSN, (int)CFAbsoluteTimeGetCurrent(), sequence);
+    pid_t pid = getpid();
+
+    CFStringRef name = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR(".%d-%d-%d"),
+						(int)pid, (int)CFAbsoluteTimeGetCurrent(), sequence);
     
     return name;
 }
