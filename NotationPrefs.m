@@ -243,8 +243,8 @@ NSMutableDictionary *ServiceAccountDictInit(NotationPrefs *prefs, NSString* serv
     switch (formatID) {
 	case SingleDatabaseFormat:
 	    return [NSMutableArray arrayWithCapacity:0];
-	case PlainTextFormat: 
-	    return [NSMutableArray arrayWithObjects:@"txt", @"text", @"utf8", @"taskpaper", nil];
+	case PlainTextFormat:
+	    return [NSMutableArray arrayWithObjects:@"txt", @"text", @"utf8", @"taskpaper", @"md", @"markdown", nil];
 	case RTFTextFormat: 
 	    return [NSMutableArray arrayWithObjects:@"rtf", nil];
 	case HTMLFormat:
