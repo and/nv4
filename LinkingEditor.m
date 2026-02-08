@@ -977,7 +977,7 @@ copyRTFType:
 		
 		//set method implementation directly; whiteIBeamCursorIMP and defaultIBeamCursorIMP always point to the same respective blocks of code
 		Method defaultIBeamCursorMethod = class_getClassMethod(class, @selector(IBeamCursor));
-		method_setImplementation(defaultIBeamCursorMethod, shouldBeWhite ? whiteIBeamCursorIMP : defaultIBeamCursorIMP);
+		method_setImplementation(defaultIBeamCursorMethod, (IMP)(shouldBeWhite ? whiteIBeamCursorIMP : defaultIBeamCursorIMP));
 		
 		NSCursor *currentCursor = [NSCursor currentCursor];
 		NSCursor *whiteCursor = whiteIBeamCursorIMP(class, @selector(whiteIBeamCursor));
