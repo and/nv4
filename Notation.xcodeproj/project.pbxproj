@@ -223,6 +223,7 @@
 
 /* Begin PBXFileReference section */
 		AA000002COMPAT00NVALERT /* NVAlertCompat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVAlertCompat.m; sourceTree = "<group>"; };
+		AA000003ENTITLEMENTS0000 /* Notation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Notation.entitlements; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		210A10660B66720F005BE981 /* BookmarksTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BookmarksTable.h; sourceTree = "<group>"; };
 		210A10670B66720F005BE981 /* BookmarksTable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = BookmarksTable.m; sourceTree = "<group>"; };
@@ -1025,6 +1026,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				57F27F7A11973A7F00C63ACF /* Notation.sdef */,
+				AA000003ENTITLEMENTS0000 /* Notation.entitlements */,
 			);
 			name = Notation;
 			sourceTree = "<group>";
@@ -1811,7 +1813,11 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RLVYQT69D4;
+				ENABLE_HARDENED_RUNTIME = YES;
+				CODE_SIGN_ENTITLEMENTS = Notation.entitlements;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = NO;
@@ -1882,7 +1888,11 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RLVYQT69D4;
+				ENABLE_HARDENED_RUNTIME = YES;
+				CODE_SIGN_ENTITLEMENTS = Notation.entitlements;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
@@ -1943,7 +1953,11 @@
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = RLVYQT69D4;
+				ENABLE_HARDENED_RUNTIME = YES;
+				CODE_SIGN_ENTITLEMENTS = Notation.entitlements;
 				CURRENT_PROJECT_VERSION = 10;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
